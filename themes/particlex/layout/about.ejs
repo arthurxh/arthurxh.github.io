@@ -1,0 +1,72 @@
+<div class="article">
+    <div>
+        <h1><%= page.title %></h1>
+    </div>
+    
+    <!-- 个人信息卡片 -->
+    <div id="about-card">
+        <div class="avatar">
+            <img src="<%- url_for(theme.avatar) %>" alt="avatar" />
+        </div>
+        <div class="name"><%= config.author %></div>
+        <div class="description">
+            <%- markdown(theme.card.description) %>
+        </div>
+        <% if (theme.card.iconLinks) { %>
+        <div class="icon-links">
+            <% Object.entries(theme.card.iconLinks).forEach(([key, value]) => { %>
+            <span class="icon-link">
+                <a href="<%- url_for(value.link) %>" target="_blank" rel="noopener noreferrer">
+                    <i class="fa-<%- value.theme %> fa-<%- value.name %> fa-fw"></i>
+                </a>
+            </span>
+            <% }); %>
+        </div>
+        <% } %>
+    </div>
+    
+    <!-- 关于内容 -->
+    <div class="about-content">
+        <%- page.content %>
+    </div>
+    
+    <!-- 技能标签 -->
+    <% if (page.skills) { %>
+    <div class="skills-section">
+        <h2>技能特长</h2>
+        <div class="skills-list">
+            <% page.skills.forEach(skill => { %>
+            <div class="skill-item">
+                <span class="skill-name"><%= skill.name %></span>
+                <% if (skill.level) { %>
+                <div class="skill-level">
+                    <div class="skill-bar" style="width: <%= skill.level %>%"></div>
+                </div>
+                <% } %>
+            </div>
+            <% }); %>
+        </div>
+    </div>
+    <% } %>
+    
+    <!-- 联系方式 -->
+    <% if (page.contact) { %>
+    <div class="contact-section">
+        <h2>联系方式</h2>
+        <div class="contact-list">
+            <% Object.entries(page.contact).forEach(([key, value]) => { %>
+            <div class="contact-item">
+                <span class="contact-label"><%= key %>:</span>
+                <span class="contact-value">
+                    <% if (typeof value === 'object' && value.link && value.text) { %>
+                    <a href="<%- value.link %>" target="_blank" rel="noopener noreferrer"><%= value.text %></a>
+                    <% } else { %>
+                    <%= value %>
+                    <% } %>
+                </span>
+            </div>
+            <% }); %>
+        </div>
+    </div>
+    <% } %>
+</div>
